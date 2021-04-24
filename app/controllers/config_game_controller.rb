@@ -1,14 +1,17 @@
 class ConfigGameController < ApplicationController
     def get
         data = ConfigGame.all
-        if data.empty?
-            dataHash = Hash.new
-            dataHash['whitespaces']=1
-            dataHash['total_letters']=32
-            dataHash['questions']=10
-            dataHash.each{|key, value| ConfigGame.create(property: key, val: value)}
-            data = ConfigGame.all
-        end
         render json: data.as_json(only: %i[property val]), status: :ok
+    end
+
+    def update
+        data = ConfigGame.where("property='#{params[:property]}'").limit(1).first
+        if data.nil?
+            head(:not_found)
+        else
+            data.val = params[:val]
+            data.save
+            head(:ok)
+        end
     end
 end
