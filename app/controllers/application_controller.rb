@@ -1,4 +1,8 @@
 class ApplicationController < ActionController::API
+    @@status = Hash.new
+    @@status[nil]='NULL';
+    @@status[true]='true';
+    @@status[false]='false';
     def initialize
         data = ConfigGame.all
         if data.empty?
