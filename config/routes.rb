@@ -7,4 +7,5 @@ Rails.application.routes.draw do
   post '/score/save', to: 'score#save'
   get '/score/show_recent', to: 'score#show_recent'
   get '/score/show_top', to: 'score#show_top'
+  get '/score/show_position', to: 'score#show_position'
 end
