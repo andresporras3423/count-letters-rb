@@ -5,4 +5,6 @@ Rails.application.routes.draw do
   get '/question/show_recent', to: 'question#show_recent'
   get '/question/show_top', to: 'question#show_top'
   post '/score/save', to: 'score#save'
+  get '/score/show_recent', to: 'score#show_recent'
+  get '/score/show_top', to: 'score#show_top'
 end
