@@ -4,13 +4,14 @@ class ApplicationController < ActionController::API
     @@status[true]='true';
     @@status[false]='false';
     def initialize
-        data = ConfigGame.all
-        if data.empty?
-            dataHash = Hash.new
-            dataHash['whitespaces']=1
-            dataHash['total_letters']=32
-            dataHash['questions']=10
-            dataHash.each{|key, value| ConfigGame.create(property: key, val: value)}
+      if ConfigGame.all.length==0
+        pokemon_file_path = File.join(File.dirname(__FILE__), "../texts/query.txt") 
+        file = File.open(pokemon_file_path)
+        file_data = file.read
+        file_data.each_line do |line|
+          ActiveRecord::Base.connection.execute(line)
         end
+        file.close
+      end
     end
 end
