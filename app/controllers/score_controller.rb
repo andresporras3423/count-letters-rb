@@ -12,7 +12,13 @@ class ScoreController < ApplicationController
 
     def show_recent
         configHash = ConfigGame.all.to_h{|c| [c.property, c.val]}
-        nScores = Score.where("questions=#{configHash['questions']} and letters=#{configHash['total_letters']}").order("created_at").limit(10)
+        sql = """
+        select (seconds*POWER(2,questions-corrects)) as score, 
+            questions, corrects, seconds, created_at from scores 
+            where questions=#{configHash['questions']} and letters=#{configHash['total_letters']}
+            order by created_at desc limit 10;
+        """;
+        top_scores = ActiveRecord::Base.connection.execute(sql)
         render json: nScores, status: :ok
     end
 
@@ -22,7 +28,7 @@ class ScoreController < ApplicationController
         select (seconds*POWER(2,questions-corrects)) as score, 
             questions, corrects, seconds, created_at from scores 
             where questions=#{configHash['questions']} and letters=#{configHash['total_letters']}
-            order by (seconds*POWER(2,questions-corrects)), corrects limit 10;
+            order by (seconds*POWER(2,questions-corrects)), corrects desc, seconds limit 10;
         """;
         top_scores = ActiveRecord::Base.connection.execute(sql)
         render json: top_scores, status: :ok
