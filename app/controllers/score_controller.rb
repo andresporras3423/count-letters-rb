@@ -18,8 +18,8 @@ class ScoreController < ApplicationController
             where questions=#{configHash['questions']} and letters=#{configHash['total_letters']}
             order by created_at desc limit 10;
         """;
-        top_scores = ActiveRecord::Base.connection.execute(sql)
-        render json: nScores, status: :ok
+        recent_scores = ActiveRecord::Base.connection.execute(sql)
+        render json: recent_scores, status: :ok
     end
 
     def show_top
