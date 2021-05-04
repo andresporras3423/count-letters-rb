@@ -10,7 +10,7 @@ class QuestionController < ApplicationController
     end
 
     def show_recent
-        nQuestions = Question.where("correct=#{@@status[params[:correct]]}").order("created_at").limit(10)
+        nQuestions = Question.where("correct=#{params[:correct]}").order("created_at").limit(10)
         render json: nQuestions.as_json(only: %i[letter created_at]), status: :ok
     end
 
@@ -19,7 +19,7 @@ class QuestionController < ApplicationController
         with q1 as (select letter,
             count(*) as total,
             sum(case
-            when correct=#{@@status[params[:correct]]}
+            when correct=#{params[:correct]}
             then 1
             else 0
             end) as corrects
