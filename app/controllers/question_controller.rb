@@ -1,6 +1,6 @@
 class QuestionController < ApplicationController
     def save
-        nQuestion = Question.create(letter: params[:letter], correct: params[:correct])
+        nQuestion = Question.create(letter: params[:letter], correct: @@status[params[:correct]])
         if nQuestion.valid?
             nQuestion.save
             head(:created)
